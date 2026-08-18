@@ -60,6 +60,42 @@
   --bg-hover-quick-add: rgba(255, 255, 255, 0.02);
 }
 
+/* --- Dark Mode specific overrides for header items --- */
+[data-theme="dark"] .countdown-chip {
+  background: rgba(236, 72, 153, 0.15);
+  border-color: rgba(236, 72, 153, 0.4);
+}
+
+[data-theme="dark"] #btn-theme {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fcd34d;
+}
+[data-theme="dark"] #btn-theme:hover {
+  background: rgba(245, 158, 11, 0.3);
+  color: #fff;
+}
+
+[data-theme="dark"] #btn-settings {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #93c5fd;
+}
+[data-theme="dark"] #btn-settings:hover {
+  background: rgba(59, 130, 246, 0.3);
+  color: #fff;
+}
+
+[data-theme="dark"] #btn-logout {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+[data-theme="dark"] #btn-logout:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fff;
+}
+
 :root {
   /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
