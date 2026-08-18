@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acompanhe suas metas de treino até o final do ano com controle total de Academia e Jiu-Jitsu">
+  <title>Meta Tracker 2026 — Acompanhe Seus Treinos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Authentication Overlay -->
+  <div id="auth-overlay" class="auth-overlay active">
+    <div class="auth-card glass-modal">
+      <div class="auth-header">
+        <div class="logo-icon auth-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h2>Bem-vindo(a)</h2>
+        <p>Acesse seu painel de metas</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Entrar</button>
+        <button class="auth-tab" data-tab="register">Criar Conta</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="form-login" class="auth-form active">
+        <div class="form-group">
+          <label for="login-username">Usuário</label>
+          <input type="text" id="login-username" required placeholder="Digite seu nome de usuário">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Senha</label>
+          <input type="password" id="login-password" required placeholder="Digite sua senha">
+        </div>
+        <button type="submit" class="btn-primary auth-submit">Entrar no Painel</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" class="auth-form">
+        <div class="form-group">
+          <label for="reg-username">Novo Usuário</label>
+          <input type="text" id="reg-username" required placeholder="Ex: andre123">
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Criar Senha</label>
+          <input type="password" id="reg-password" required placeholder="Crie uma senha segura">
+        </div>
+        <button type="submit" class="btn-primary auth-submit">Criar Conta e Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Background animated particles -->
+  <div class="bg-particles" id="bgParticles"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 id="app-title">Meta Tracker <span class="year-badge">2026</span></h1>
+          <p class="header-subtitle" id="header-subtitle">Construindo disciplina, um treino de cada vez</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="countdown-chip" id="countdown-chip">
+          <span class="countdown-number" id="days-remaining">136</span>
+          <span class="countdown-label">dias restantes</span>
+        </div>
+        <button class="btn-icon" id="btn-theme" title="Alternar Tema" aria-label="Alternar Tema">
+          <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <!-- Moon -->
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+        <button class="btn-icon" id="btn-settings" title="Configurações" aria-label="Configurações">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+        <button class="btn-icon btn-logout" id="btn-logout" title="Sair da Conta" aria-label="Sair">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats Overview Cards -->
+    <section class="stats-overview" id="stats-overview">
+      <div class="stat-card glass-card" id="stat-total-sessions">
+        <div class="stat-icon fire">🔥</div>
+        <div class="stat-info">
+          <span class="stat-value" id="total-sessions">0</span>
+          <span class="stat-label">Treinos Realizados</span>
+        </div>
+      </div>
+      <div class="stat-card glass-card" id="stat-streak">
+        <div class="stat-icon streak">⚡</div>
+        <div class="stat-info">
+          <span class="stat-value" id="current-streak">0</span>
+          <span class="stat-label">Sequência Atual</span>
+        </div>
+      </div>
+      <div class="stat-card glass-card" id="stat-week">
+        <div class="stat-icon week">📅</div>
+        <div class="stat-info">
+          <span class="stat-value" id="week-sessions">0</span>
+          <span class="stat-label">Nesta Semana</span>
+        </div>
+      </div>
+      <div class="stat-card glass-card" id="stat-overall">
+        <div class="stat-icon overall">🎯</div>
+        <div class="stat-info">
+          <span class="stat-value" id="overall-progress">0%</span>
+          <span class="stat-label">Meta Geral</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Goals Progress Section -->
+    <section class="goals-section">
+      <div class="section-header">
+        <h2>Suas Metas</h2>
+        <button class="btn-secondary" id="btn-add-goal" title="Adicionar Meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Nova Meta
+        </button>
+      </div>
+
+      <div class="goals-grid" id="goals-grid">
+        <!-- Goals will be rendered here dynamically -->
+      </div>
+    </section>
+
+    <!-- Session Log Section -->
+    <section class="log-section">
+      <div class="section-header">
+        <h2>Registro de Treinos</h2>
+        <div class="log-filters">
+          <button class="filter-btn active" data-filter="all" id="filter-all">Todos</button>
+          <button class="filter-btn" data-filter="academia" id="filter-academia">Academia</button>
+          <button class="filter-btn" data-filter="jiu-jitsu" id="filter-jiujitsu">Jiu-Jitsu</button>
+        </div>
+      </div>
+
+      <div class="log-list" id="log-list">
+        <!-- Session entries rendered here -->
+      </div>
+
+      <div class="empty-state" id="empty-state" style="display:none;">
+        <div class="empty-icon">📝</div>
+        <p>Nenhum treino registrado ainda.</p>
+        <p class="empty-sub">Comece registrando seu primeiro treino!</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Floating Action Button -->
+  <button class="fab" id="fab-add" title="Registrar Treino" aria-label="Registrar Treino">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+  </button>
+
+  <!-- Modal: Add Session -->
+  <div class="modal-overlay" id="modal-add-session">
+    <div class="modal glass-modal">
+      <div class="modal-header">
+        <h3 id="modal-session-title">Registrar Treino</h3>
+        <button class="btn-close" id="close-add-session" aria-label="Fechar">×</button>
+      </div>
+      <form id="form-add-session">
+        <input type="hidden" id="edit-session-id" value="">
+        <div class="form-group">
+          <label for="session-goal">Tipo de Treino</label>
+          <select id="session-goal" required>
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="session-date">Data</label>
+          <input type="date" id="session-date" required>
+        </div>
+        <div class="form-group">
+          <label for="session-notes">Observações (opcional)</label>
+          <textarea id="session-notes" rows="3" placeholder="Ex: Treino pesado de costas, sparring leve..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="session-duration">Duração (minutos, opcional)</label>
+          <input type="number" id="session-duration" min="1" max="600" placeholder="60">
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-ghost" id="cancel-add-session">Cancelar</button>
+          <button type="submit" class="btn-primary" id="submit-session-btn">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Edit Goal -->
+  <div class="modal-overlay" id="modal-edit-goal">
+    <div class="modal glass-modal">
+      <div class="modal-header">
+        <h3 id="modal-goal-title">Editar Meta</h3>
+        <button class="btn-close" id="close-edit-goal" aria-label="Fechar">×</button>
+      </div>
+      <form id="form-edit-goal">
+        <input type="hidden" id="edit-goal-id" value="">
+        <div class="form-group">
+          <label for="goal-name">Nome da Meta</label>
+          <input type="text" id="goal-name" required placeholder="Ex: Academia">
+        </div>
+        <div class="form-group">
+          <label for="goal-target">Quantidade de Treinos</label>
+          <input type="number" id="goal-target" min="1" max="365" required>
+        </div>
+        <div class="form-group">
+          <label for="goal-icon">Ícone</label>
+          <div class="icon-picker" id="icon-picker">
+            <button type="button" class="icon-option selected" data-icon="🏋️">🏋️</button>
+            <button type="button" class="icon-option" data-icon="🥋">🥋</button>
+            <button type="button" class="icon-option" data-icon="🏃">🏃</button>
+            <button type="button" class="icon-option" data-icon="🚴">🚴</button>
+            <button type="button" class="icon-option" data-icon="🏊">🏊</button>
+            <button type="button" class="icon-option" data-icon="🧘">🧘</button>
+            <button type="button" class="icon-option" data-icon="⚽">⚽</button>
+            <button type="button" class="icon-option" data-icon="🥊">🥊</button>
+            <button type="button" class="icon-option" data-icon="🎾">🎾</button>
+            <button type="button" class="icon-option" data-icon="🏄">🏄</button>
+            <button type="button" class="icon-option" data-icon="💪">💪</button>
+            <button type="button" class="icon-option" data-icon="🧗">🧗</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="goal-color">Cor do Tema</label>
+          <div class="color-picker" id="color-picker">
+            <button type="button" class="color-option selected" data-color="#6C5CE7" style="background:#6C5CE7"></button>
+            <button type="button" class="color-option" data-color="#00B894" style="background:#00B894"></button>
+            <button type="button" class="color-option" data-color="#E17055" style="background:#E17055"></button>
+            <button type="button" class="color-option" data-color="#0984E3" style="background:#0984E3"></button>
+            <button type="button" class="color-option" data-color="#FDCB6E" style="background:#FDCB6E"></button>
+            <button type="button" class="color-option" data-color="#E84393" style="background:#E84393"></button>
+            <button type="button" class="color-option" data-color="#00CEC9" style="background:#00CEC9"></button>
+            <button type="button" class="color-option" data-color="#FF7675" style="background:#FF7675"></button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-danger" id="delete-goal-btn" style="display:none;">Excluir Meta</button>
+          <div class="form-actions-right">
+            <button type="button" class="btn-ghost" id="cancel-edit-goal">Cancelar</button>
+            <button type="submit" class="btn-primary" id="submit-goal-btn">Salvar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Settings -->
+  <div class="modal-overlay" id="modal-settings">
+    <div class="modal glass-modal">
+      <div class="modal-header">
+        <h3>Configurações</h3>
+        <button class="btn-close" id="close-settings" aria-label="Fechar">×</button>
+      </div>
+      <div class="settings-content">
+        <div class="form-group">
+          <label for="settings-end-date">Data Final do Desafio</label>
+          <input type="date" id="settings-end-date">
+        </div>
+        <div class="settings-section">
+          <h4>Dados</h4>
+          <div class="settings-actions">
+            <button class="btn-secondary" id="btn-export">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+              </svg>
+              Exportar Dados
+            </button>
+            <button class="btn-secondary" id="btn-import">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+              Importar Dados
+            </button>
+            <input type="file" id="import-file" accept=".json" style="display:none">
+          </div>
+        </div>
+        <div class="settings-section danger-zone">
+          <h4>Zona de Perigo</h4>
+          <button class="btn-danger" id="btn-reset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+            Resetar Todos os Dados
+          </button>
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" id="save-settings">Salvar Configurações</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
