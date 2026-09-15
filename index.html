@@ -2,60 +2,24 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Acompanhe suas metas de treino até o final do ano com controle total de Academia e Jiu-Jitsu">
   <title>Meta Tracker 2026 — Acompanhe Seus Treinos</title>
+  
+  <!-- PWA & iOS Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f0f13">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Metas">
+  <link rel="apple-touch-icon" href="icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Authentication Overlay -->
-  <div id="auth-overlay" class="auth-overlay active">
-    <div class="auth-card glass-modal">
-      <div class="auth-header">
-        <div class="logo-icon auth-logo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-          </svg>
-        </div>
-        <h2>Bem-vindo(a)</h2>
-        <p>Acesse seu painel de metas</p>
-      </div>
 
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-tab="login">Entrar</button>
-        <button class="auth-tab" data-tab="register">Criar Conta</button>
-      </div>
-
-      <!-- Login Form -->
-      <form id="form-login" class="auth-form active">
-        <div class="form-group">
-          <label for="login-username">Usuário</label>
-          <input type="text" id="login-username" required placeholder="Digite seu nome de usuário">
-        </div>
-        <div class="form-group">
-          <label for="login-password">Senha</label>
-          <input type="password" id="login-password" required placeholder="Digite sua senha">
-        </div>
-        <button type="submit" class="btn-primary auth-submit">Entrar no Painel</button>
-      </form>
-
-      <!-- Register Form -->
-      <form id="form-register" class="auth-form">
-        <div class="form-group">
-          <label for="reg-username">Novo Usuário</label>
-          <input type="text" id="reg-username" required placeholder="Ex: andre123">
-        </div>
-        <div class="form-group">
-          <label for="reg-password">Criar Senha</label>
-          <input type="password" id="reg-password" required placeholder="Crie uma senha segura">
-        </div>
-        <button type="submit" class="btn-primary auth-submit">Criar Conta e Entrar</button>
-      </form>
-    </div>
-  </div>
 
   <!-- Background animated particles -->
   <div class="bg-particles" id="bgParticles"></div>
@@ -94,13 +58,7 @@
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
           </svg>
         </button>
-        <button class="btn-icon btn-logout" id="btn-logout" title="Sair da Conta" aria-label="Sair">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-        </button>
+
       </div>
     </header>
 
@@ -329,5 +287,16 @@
   <canvas id="confetti-canvas"></canvas>
 
   <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((registration) => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }).catch((err) => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

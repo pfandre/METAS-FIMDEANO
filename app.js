@@ -6,29 +6,11 @@
   'use strict';
 
   // ─── Constants ─────────────────────────────────
-  const USERS_KEY = 'metaTracker2026_users';
-  const ACTIVE_USER_KEY = 'metaTracker2026_activeUser';
-  const LEGACY_STORAGE_KEY = 'metaTracker2026'; // for migration
+  const STORAGE_KEY = 'metaTracker2026';
   const CIRCUMFERENCE = 2 * Math.PI * 50; // r=50 for SVG circle
 
-  // ─── Auth State ────────────────────────────────
-  let users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
-  let activeUser = JSON.parse(localStorage.getItem(ACTIVE_USER_KEY) || 'null');
-  
   function getStorageKey() {
-    return activeUser ? `metaTracker2026_data_${activeUser.id}` : null;
-  }
-
-  function saveUsers() {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  }
-  
-  function saveActiveUser() {
-    if (activeUser) {
-      localStorage.setItem(ACTIVE_USER_KEY, JSON.stringify(activeUser));
-    } else {
-      localStorage.removeItem(ACTIVE_USER_KEY);
-    }
+    return STORAGE_KEY;
   }
 
   // ─── Default State ─────────────────────────────
@@ -62,7 +44,6 @@
   let state = null; // Loaded only when authenticated
 
   function loadState() {
-    if (!activeUser) return getDefaultState();
     try {
       const raw = localStorage.getItem(getStorageKey());
       if (raw) {
@@ -80,7 +61,6 @@
   }
 
   function saveState() {
-    if (!activeUser) return;
     try {
       localStorage.setItem(getStorageKey(), JSON.stringify(state));
     } catch (e) {
@@ -201,17 +181,7 @@
     emptyState: $('#empty-state'),
     fabAdd: $('#fab-add'),
 
-    // Auth
-    authOverlay: $('#auth-overlay'),
     appContainer: $('.app-container'),
-    authTabs: $$('.auth-tab'),
-    formLogin: $('#form-login'),
-    formRegister: $('#form-register'),
-    loginUsername: $('#login-username'),
-    loginPassword: $('#login-password'),
-    regUsername: $('#reg-username'),
-    regPassword: $('#reg-password'),
-    btnLogout: $('#btn-logout'),
 
     // Theme
     btnTheme: $('#btn-theme'),
@@ -1043,92 +1013,10 @@
     // Filter buttons
     attachFilterEvents();
 
-    // Auth events
-    dom.authTabs.forEach(t => t.addEventListener('click', handleAuthTabs));
-    dom.formLogin.addEventListener('submit', handleLogin);
-    dom.formRegister.addEventListener('submit', handleRegister);
-    dom.btnLogout.addEventListener('click', logout);
-  }
-
-  // ─── Authentication ────────────────────────────
-
-  function handleAuthTabs(e) {
-    const tabName = e.target.dataset.tab;
-    dom.authTabs.forEach(t => t.classList.remove('active'));
-    e.target.classList.add('active');
-    
-    if (tabName === 'login') {
-      dom.formLogin.classList.add('active');
-      dom.formRegister.classList.remove('active');
-    } else {
-      dom.formLogin.classList.remove('active');
-      dom.formRegister.classList.add('active');
-    }
-  }
-
-  function handleLogin(e) {
-    e.preventDefault();
-    const username = dom.loginUsername.value.trim().toLowerCase();
-    const password = dom.loginPassword.value;
-    
-    const user = users.find(u => u.username === username && u.password === password);
-    
-    if (user) {
-      activeUser = user;
-      saveActiveUser();
-      startApp();
-      showToast(`Bem-vindo de volta, ${user.username}!`, 'success');
-    } else {
-      showToast('Usuário ou senha incorretos.', 'error');
-    }
-  }
-
-  function handleRegister(e) {
-    e.preventDefault();
-    const username = dom.regUsername.value.trim().toLowerCase();
-    const password = dom.regPassword.value;
-    
-    if (users.find(u => u.username === username)) {
-      showToast('Este nome de usuário já existe.', 'error');
-      return;
-    }
-    
-    const isFirstUser = users.length === 0;
-    const newUser = { id: generateId(), username, password };
-    users.push(newUser);
-    saveUsers();
-    
-    activeUser = newUser;
-    saveActiveUser();
-    
-    // Migration logic for the first user:
-    if (isFirstUser) {
-      const legacyData = localStorage.getItem(LEGACY_STORAGE_KEY);
-      if (legacyData) {
-        localStorage.setItem(getStorageKey(), legacyData);
-        localStorage.removeItem(LEGACY_STORAGE_KEY);
-      }
-    }
-    
-    startApp();
-    showToast(`Conta criada! Bem-vindo, ${username}!`, 'success');
-  }
-
-  function logout() {
-    activeUser = null;
-    saveActiveUser();
-    state = null;
-    
-    dom.appContainer.style.display = 'none';
-    dom.authOverlay.classList.add('active');
-    dom.formLogin.reset();
-    dom.formRegister.reset();
   }
 
   function startApp() {
     state = loadState();
-    dom.authOverlay.classList.remove('active');
-    dom.appContainer.style.display = 'block';
     
     updateFilterButtons();
     renderAll();
@@ -1140,13 +1028,7 @@
   function init() {
     createParticles();
     bindEvents();
-    
-    if (activeUser) {
-      startApp();
-    } else {
-      dom.appContainer.style.display = 'none';
-      dom.authOverlay.classList.add('active');
-    }
+    startApp();
 
     console.log(
       '%c⚡ Meta Tracker 2026 — Loaded!',
